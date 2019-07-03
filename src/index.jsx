@@ -1,5 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Button } from 'antd-mobile'
+import { Login } from './login'
 
-ReactDOM.render(<Button>Start</Button>, document.getElementById('root'))
+ReactDOM.render(<Login />, document.getElementById('root'))
