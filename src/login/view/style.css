@@ -1,0 +1,14 @@
+@media (min-width: 768px)
+{
+    .flex-container {
+    display: flex;
+		}
+
+		.column-main {
+    flex: 40%;
+		}
+
+		.column-side {
+    flex: 30%;
+    }
+}

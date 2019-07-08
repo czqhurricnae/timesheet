@@ -1,3 +1,3 @@
-import Login from './view/container'
+import view from './view/login'
 
-export { Login }
+export { view }
