@@ -81,7 +81,7 @@ class Login extends React.Component {
   }
 
   handleChange = (value) => {
-    if (value.replace(/\s/g, '').length != 6) {
+    if (value.replace(/\s/g, '').length !== 6) {
       this.setState({
         hasError: true
       })
