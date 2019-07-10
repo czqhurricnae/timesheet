@@ -6,6 +6,7 @@ import { Grid,
          Icon } from 'semantic-ui-react'
 import EntryForm from './entryForm'
 import Entry from './entry'
+import RcForm from './rcForm'
 
 const fields = {
   select: {
@@ -28,7 +29,8 @@ const fields = {
 class DataEntry extends Component {
   state = {
     listFormID: [],
-    updateFormID: []
+    stashFormID: [],
+    openFormID: []
   }
 
   handleAddEntryForm = () => {
@@ -38,89 +40,106 @@ class DataEntry extends Component {
                                 Number(this.state.listFormID.slice(-1)) + 1]})
   }
 
-  handleFormDelete = (id) => {
+  handleDeleteForm = (id) => {
     this.setState({listFormID: this.state.listFormID.filter(t => t !== id)})
   }
 
-  handleEntryDelete= (id) => {
+  handleDeleteEntry= (id) => {
     this.setState({listFormID: this.state.listFormID.filter(t => t !== id),
-                   updateFormID: this.state.updateFormID.filter(t => t !== id)})
+                   stashFormID: this.state.stashFormID.filter(t => t !== id)})
   }
 
   handleSave = (id) => {
-    this._updateEditableEntry(id)
+    this._stashEditableEntry(id)
   }
 
-  _updateEditableEntry = (id) => {
-    if (this.state.updateFormID.length == 0) {
-      this.setState({updateFormID: [...this.state.updateFormID, id]})
+  handleOpen = (id) => {
+    this._openEditableEntry(id)
+  }
+
+  _stashEditableEntry = (id) => {
+    if (this.state.stashFormID.length == 0) {
+      this.setState({stashFormID: [...this.state.stashFormID, id]})
     } else {
-      this.state.updateFormID.forEach((item, index, array) => {
-        if (this.state.updateFormID.indexOf(id) == -1) {
-          this.setState({updateFormID: [...this.state.updateFormID, id]})
+      this.state.stashFormID.forEach((item, index, array) => {
+        if (this.state.stashFormID.indexOf(id) == -1) {
+          this.setState({stashFormID: [...this.state.stashFormID, id]})
+        }
+      })
+    }
+  }
+
+  _openEditableEntry = (id) => {
+    if (this.state.openFormID.length == 0) {
+      this.setState({openFormID: [...this.state.openFormID, id],
+                     stashFormID: this.state.stashFormID.filter(t => t !== id)})
+    } else {
+      this.state.openFormID.forEach((item, index, array) => {
+        if (this.state.openFormID.indexOf(id) == -1) {
+          this.setState({openFormID: [...this.state.openFormID, id],
+                         stashFormID: this.state.stashFormID.filter(t => t !== id)})
         }
       })
     }
   }
 
   render () {
-    const children = []
-    this.state.listFormID.map((child, index) => {
-      if (this.state.updateFormID.length !== 0) {
-        if (this.state.updateFormID.indexOf(child) !== -1) {
-          children.push(<Entry
-                          formID={child}
-                          onDelete={this.handleEntryDelete}
-                        />)
-        } else {
-          children.push(<EntryForm
-                          key={index}
-                          formID={child}
-                          fields={fields}
-                          onDelete={this.handleFormDelete}
-                          onSave={this.handleSave}/>)
+    const children = this.state.listFormID.reduce((prev, cur, index, array) => {
+      if (this.state.stashFormID.length !== 0) {
+        if (this.state.stashFormID.indexOf(cur) !== -1) {
+          prev.push(<Entry
+                          formID={cur}
+                          onDelete={this.handleDeleteEntry}
+                          onOpen={this.handleOpen}
+                        />
+          )
+          return prev
         }
-      } else {
-          children.push(<EntryForm
-                          key={index}
-                          formID={child}
-                          fields={fields}
-                          onDelete={this.handleFormDelete}
-                          onSave={this.handleSave}/>)
       }
-    })
-
-    console.log(children)
-      return (
-        <Grid centered>
-          <Grid.Column>
-            <Segment.Group >
-              <Segment inverted textAlign='center'>
-                <Header as='h6' icon>
-                  <Icon name='keyboard'>工时管理</Icon>
-                </Header>
-              </Segment>
-              <Segment>
-                {children}
-              </Segment>
-              <Segment>
-                <Grid>
-                  <Grid.Column textAlign='center'>
-                    <Button
-                      icon
-                      circular
-                      color='blue'
-                      onClick={this.handleAddEntryForm}
-                    >
-                      <Icon name='plus' />
-                    </Button>
-                  </Grid.Column>
-                </Grid>
-              </Segment>
-            </Segment.Group>
-          </Grid.Column>
-        </Grid>
-      )
+      if (this.state.openFormID.length !== 0) {
+        if (this.state.openFormID.indexOf(cur) !== -1) {
+          prev.push(<RcForm></RcForm>)
+          return prev
+        }
+      }
+      prev.push(<EntryForm
+                      key={index}
+                      formID={cur}
+                      fields={fields}
+                      onDelete={this.handleDeleteForm}
+                      onSave={this.handleSave}/>)
+      return prev
+    }, [])
+    return (
+      <Grid centered>
+        <Grid.Column>
+          <Segment.Group >
+            <Segment inverted textAlign='center'>
+              <Header as='h6' icon>
+                <Icon name='keyboard'>工时管理</Icon>
+              </Header>
+            </Segment>
+            <Segment>
+              {children}
+            </Segment>
+            <Segment>
+              <Grid>
+                <Grid.Column textAlign='center'>
+                  <Button
+                    icon
+                    circular
+                    color='blue'
+                    onClick={this.handleAddEntryForm}
+                  >
+                    <Icon name='plus' />
+                  </Button>
+                </Grid.Column>
+              </Grid>
+            </Segment>
+          </Segment.Group>
+        </Grid.Column>
+      </Grid>
+    )
   }
 }
 

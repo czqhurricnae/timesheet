@@ -38,9 +38,10 @@ class Login extends React.Component {
   }
 
   componentWillMount () {
-    this.decoratorFactory = (field, rule) => this.props.form.getFieldDecorator(field, {
-      rules: [].concat(rule)
-    })
+    this.decoratorFactory = (field, rule) =>
+      this.props.form.getFieldDecorator(field, {
+        rules: [].concat(rule)
+      })
   }
 
   handleOnBlur = () => {

@@ -10,6 +10,14 @@ const Entry = (props) => {
       props.onDelete(formID)
     }
   }
+
+  const handleOpen = (event) => {
+    event.preventDefault()
+    if (props.onOpen) {
+      props.onOpen(formID)
+    }
+  }
+
   return (
     <Card.Group centered>
       <Card>
@@ -26,7 +34,7 @@ const Entry = (props) => {
         </Card.Content>
         <Card.Content extra>
           <span className='right floated'>
-            <Icon name='edit' />
+            <Icon name='edit' onClick={handleOpen} />
           </span>
           <span className='right floated'>
             <Icon name='trash' color='red' onClick={handleDelete} />
