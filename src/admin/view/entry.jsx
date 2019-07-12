@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Icon } from 'semantic-ui-react'
+import { Card, Icon, Header } from 'semantic-ui-react'
 
 const Entry = (props) => {
   const formID = props.formID ? props.formID : null
@@ -22,27 +22,28 @@ const Entry = (props) => {
     <Card.Group centered>
       <Card>
         <Card.Content>
+          <Header as='h5' textAlign='left'>
+            {formID} #
+          </Header>
           <Card.Header>
-            例行工作
+            {props.datasheet.selected}
           </Card.Header>
-          <Card.Description textAlign='center'>
-            <h2>空调健康测试</h2>
-          </Card.Description>
-          <Card.Description textAlign='center'>
-            <h2>3</h2>
-          </Card.Description>
+          {props.datasheet.inputs.map((item, index) => (
+            <Card.Description key={index} textAlign='center'>
+              <h2>{item.value}</h2>
+            </Card.Description>
+          ))}
         </Card.Content>
         <Card.Content extra>
           <span className='right floated'>
             <Icon name='edit' onClick={handleOpen} />
           </span>
-          <span className='right floated'>
+          <span className='left floated'>
             <Icon name='trash' color='red' onClick={handleDelete} />
           </span>
         </Card.Content>
       </Card>
     </Card.Group>
-
   )
 }
 

@@ -4,27 +4,57 @@ import { Grid,
          Button,
          Header,
          Icon } from 'semantic-ui-react'
-import EntryForm from './entryForm'
 import Entry from './entry'
-import RcForm from './rcForm'
+import EntryForm from './entryForm'
 
-const fields = {
-  select: {
-    label: '类别',
-    placeholder: 'Kind',
-    options: [
-      { key: 'm', text: '杂项', value: '杂项' },
-      { key: 'r', text: '例行工作', value: '例行工作' },
-      { key: 'u', text: '非例行工作', value: '非例行工作' },
-      { key: 't', text: '排故', value: '排故' },
-      { key: 'o', text: '其他', value: '其他' }
-    ]
-  },
+const datasheets = {}
+
+const datasheet = {
   inputs: [
-    { label: '项目', placeholder: 'Task' },
-    { label: '工时', placeholder: 'Time' }
-  ]
+    {value: ''},
+    {value: ''},
+  ],
+  selected: ''
 }
+
+const fields ={inputs:
+                [{field: 'inputs[0].value', label: '机号', placeholder: 'Aircraft', message: '请输入机号'},
+                 {field: 'inputs[1].value', label: '工时', placeholder: 'Time', message: '请输入工时'}],
+               selected: {field: 'selected', label: '项目', placeholder: 'Task', message: '请选择项目'}
+              }
+
+const source = [
+  {
+    'title': 'Rempel, Smith and Hilll',
+    'description': 'Pre-emptive heuristic software',
+    'image': 'https://s3.amazonaws.com/uifaces/faces/twitter/funwatercat/128.jpg',
+    'price': '$83.27'
+  },
+  {
+    'title': 'Kuvalis and Sons',
+    'description': 'Down-sized static middleware',
+    'image': 'https://s3.amazonaws.com/uifaces/faces/twitter/rickyyean/128.jpg',
+    'price': '$70.66'
+  },
+  {
+    'title': 'Kunde and Sons',
+    'description': 'Universal system-worthy capacity',
+    'image': 'https://s3.amazonaws.com/uifaces/faces/twitter/eugeneeweb/128.jpg',
+    'price': '$26.30'
+  },
+  {
+    'title': 'White, Cronin and Ratke',
+    'description': 'Assimilated static solution',
+    'image': 'https://s3.amazonaws.com/uifaces/faces/twitter/dhilipsiva/128.jpg',
+    'price': '$82.48'
+  },
+  {
+    'title': 'Lemke, West and Brekke',
+    'description': 'Extended bottom-line matrix',
+    'image': 'https://s3.amazonaws.com/uifaces/faces/twitter/webtanya/128.jpg',
+    'price': '$32.47'
+  }
+]
 
 class DataEntry extends Component {
   state = {
@@ -35,21 +65,18 @@ class DataEntry extends Component {
 
   handleAddEntryForm = () => {
     this.setState({listFormID: [...this.state.listFormID,
-                                this.state.listFormID.length == 0 ?
-                                this.state.listFormID.length + 1 :
                                 Number(this.state.listFormID.slice(-1)) + 1]})
   }
 
-  handleDeleteForm = (id) => {
-    this.setState({listFormID: this.state.listFormID.filter(t => t !== id)})
-  }
-
-  handleDeleteEntry= (id) => {
+  handleDelete = (id) => {
+    this._deleteFromDatasheets(id)
     this.setState({listFormID: this.state.listFormID.filter(t => t !== id),
-                   stashFormID: this.state.stashFormID.filter(t => t !== id)})
+                   stashFormID: this.state.stashFormID.filter(t => t !== id),
+                   openFormID: this.state.openFormID.filter(t => t !== id)})
   }
 
-  handleSave = (id) => {
+  handleStash = (id, stashDatasheet) => {
+    this._stashToDatasheets(id, stashDatasheet)
     this._stashEditableEntry(id)
   }
 
@@ -58,24 +85,26 @@ class DataEntry extends Component {
   }
 
   _stashEditableEntry = (id) => {
-    if (this.state.stashFormID.length == 0) {
-      this.setState({stashFormID: [...this.state.stashFormID, id]})
+    if (this.state.stashFormID.length === 0) {
+      this.setState({stashFormID: [...this.state.stashFormID, id],
+                     openFormID: [...this.state.openFormID.filter(t => t !== id)]})
     } else {
       this.state.stashFormID.forEach((item, index, array) => {
-        if (this.state.stashFormID.indexOf(id) == -1) {
-          this.setState({stashFormID: [...this.state.stashFormID, id]})
+        if (this.state.stashFormID.indexOf(id) === -1) {
+          this.setState({stashFormID: [...this.state.stashFormID, id],
+                         openFormID: [...this.state.openFormID.filter(t => t !== id)]})
         }
       })
     }
   }
 
   _openEditableEntry = (id) => {
-    if (this.state.openFormID.length == 0) {
+    if (this.state.openFormID.length === 0) {
       this.setState({openFormID: [...this.state.openFormID, id],
                      stashFormID: this.state.stashFormID.filter(t => t !== id)})
     } else {
       this.state.openFormID.forEach((item, index, array) => {
-        if (this.state.openFormID.indexOf(id) == -1) {
+        if (this.state.openFormID.indexOf(id) === -1) {
           this.setState({openFormID: [...this.state.openFormID, id],
                          stashFormID: this.state.stashFormID.filter(t => t !== id)})
         }
@@ -83,13 +112,23 @@ class DataEntry extends Component {
     }
   }
 
+  _stashToDatasheets = (id, datasheet) => {
+    datasheets[id] = JSON.parse(JSON.stringify(datasheet))
+  }
+
+  _deleteFromDatasheets = (id) => {
+    delete datasheets[id]
+  }
+
   render () {
     const children = this.state.listFormID.reduce((prev, cur, index, array) => {
       if (this.state.stashFormID.length !== 0) {
         if (this.state.stashFormID.indexOf(cur) !== -1) {
           prev.push(<Entry
+                          key={index}
                           formID={cur}
-                          onDelete={this.handleDeleteEntry}
+                          datasheet={datasheets[cur]}
+                          onDelete={this.handleDelete}
                           onOpen={this.handleOpen}
                         />
           )
@@ -98,16 +137,29 @@ class DataEntry extends Component {
       }
       if (this.state.openFormID.length !== 0) {
         if (this.state.openFormID.indexOf(cur) !== -1) {
-          prev.push(<RcForm></RcForm>)
+          prev.push(<EntryForm
+                      key={index}
+                      fields={fields}
+                      formID={cur}
+                      datasheet={datasheets[cur]}
+                      source={source}
+                      onDelete={this.handleDelete}
+                      onStash={this.handleStash}
+                      isOpen={true}
+                    />)
           return prev
         }
       }
       prev.push(<EntryForm
-                      key={index}
-                      formID={cur}
-                      fields={fields}
-                      onDelete={this.handleDeleteForm}
-                      onSave={this.handleSave}/>)
+                  key={index}
+                  fields={fields}
+                  formID={cur}
+                  datasheet={datasheets}
+                  source={source}
+                  onDelete={this.handleDelete}
+                  onStash={this.handleStash}
+                  isOpen={false}
+                />)
       return prev
     }, [])
     return (
