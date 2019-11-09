@@ -23,44 +23,27 @@ const fields ={inputs:
                selected: {field: 'selected', label: '项目', placeholder: 'Task', message: '请选择项目'}
               }
 
-const source = [
-  {
-    'title': 'Rempel, Smith and Hilll',
-    'description': 'Pre-emptive heuristic software',
-    'image': 'https://s3.amazonaws.com/uifaces/faces/twitter/funwatercat/128.jpg',
-    'price': '$83.27'
-  },
-  {
-    'title': 'Kuvalis and Sons',
-    'description': 'Down-sized static middleware',
-    'image': 'https://s3.amazonaws.com/uifaces/faces/twitter/rickyyean/128.jpg',
-    'price': '$70.66'
-  },
-  {
-    'title': 'Kunde and Sons',
-    'description': 'Universal system-worthy capacity',
-    'image': 'https://s3.amazonaws.com/uifaces/faces/twitter/eugeneeweb/128.jpg',
-    'price': '$26.30'
-  },
-  {
-    'title': 'White, Cronin and Ratke',
-    'description': 'Assimilated static solution',
-    'image': 'https://s3.amazonaws.com/uifaces/faces/twitter/dhilipsiva/128.jpg',
-    'price': '$82.48'
-  },
-  {
-    'title': 'Lemke, West and Brekke',
-    'description': 'Extended bottom-line matrix',
-    'image': 'https://s3.amazonaws.com/uifaces/faces/twitter/webtanya/128.jpg',
-    'price': '$32.47'
-  }
-]
-
 class DataEntry extends Component {
   state = {
     listFormID: [],
     stashFormID: [],
     openFormID: []
+  }
+
+  componentDidMount () {
+      const projectApi = 'http://localhost:5000/api/projects';
+      fetch(projectApi).then((response) => {
+          if (response.status !== 200) {
+              throw new Error('Fail to get response with status ' + response.status);
+          }
+          response.json().then((responseJson) => {
+              this.setState({source: responseJson});
+          }).catch((error) => {
+              this.setState({source: null});
+          }).catch((error) => {
+              this.setState({source: null});
+          });
+      });
   }
 
   handleAddEntryForm = () => {
@@ -142,7 +125,7 @@ class DataEntry extends Component {
                       fields={fields}
                       formID={cur}
                       datasheet={datasheets[cur]}
-                      source={source}
+                      source={this.state.source}
                       onDelete={this.handleDelete}
                       onStash={this.handleStash}
                       isOpen={true}
@@ -155,7 +138,7 @@ class DataEntry extends Component {
                   fields={fields}
                   formID={cur}
                   datasheet={datasheets}
-                  source={source}
+                  source={this.state.source}
                   onDelete={this.handleDelete}
                   onStash={this.handleStash}
                   isOpen={false}
