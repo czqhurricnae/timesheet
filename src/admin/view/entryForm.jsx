@@ -89,10 +89,11 @@ class OriginForm extends React.Component {
   }
 
   render() {
+    const { onStash, onDelete, formID, isOpen , ...rest } = this.props;
     const { getFieldDecorator, getFieldError } = this.props.form;
-    const { isLoading, value, results } = this.state
-    const fields = this.props.fields
-    const formID = this.props.formID ? this.props.formID : null
+    const { isLoading, value, results } = this.state;
+    const fields = this.props.fields;
+    /* const formID = this.props.formID ? this.props.formID : null; */
 
     return (
       <div className='ui centered cards'>
@@ -120,7 +121,7 @@ class OriginForm extends React.Component {
                          })}
                          results={results}
                          resultRenderer={resultRenderer}
-                         {...this.props}
+                         {...rest}
                          placeholder={fields.selected.placeholder}
                     />)}
                     <div style={{ color: 'red' }}>
