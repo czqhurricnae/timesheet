@@ -15,8 +15,6 @@ resultRenderer.propTypes = {
 
 const initialState = { isLoading: false, results: [], value: '' }
 
-const datasheets = {}
-
 class OriginForm extends React.Component {
   static propTypes = {
     form: formShape,
@@ -91,7 +89,7 @@ class OriginForm extends React.Component {
   render() {
     const { onStash, onDelete, formID, isOpen , ...rest } = this.props;
     const { getFieldDecorator, getFieldError } = this.props.form;
-    const { isLoading, value, results } = this.state;
+    const { isLoading, results } = this.state;
     const fields = this.props.fields;
     /* const formID = this.props.formID ? this.props.formID : null; */
 

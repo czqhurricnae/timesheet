@@ -9,14 +9,6 @@ import EntryForm from './entryForm'
 
 const datasheets = {}
 
-const datasheet = {
-  inputs: [
-    {value: ''},
-    {value: ''},
-  ],
-  selected: ''
-}
-
 const fields ={inputs:
                 [{field: 'inputs[0].value', label: '机号', placeholder: 'Aircraft', message: '请输入机号'},
                  {field: 'inputs[1].value', label: '工时', placeholder: 'Time', message: '请输入工时'}],
