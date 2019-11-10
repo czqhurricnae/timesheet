@@ -52,17 +52,17 @@ class OriginForm extends React.Component {
    this.setSelected(value)
   }
 
-  handleStash = (e) => {
-    e.preventDefault()
-    const formID = this.props.formID ? this.props.formID : null
-    const stashDatasheet = this.props.form.getFieldsValue()
+  handleStash = (event) => {
+    event.preventDefault();
+    const formID = this.props.formID ? this.props.formID : null;
+    const stashDatasheet = this.props.form.getFieldsValue();
     console.log('Values of all fields');
     console.log(stashDatasheet);
 
     this.props.form.validateFieldsAndScroll((error, values) => {
       if (!error) {
         if (this.props.onStash) {
-          this.props.onStash(formID, stashDatasheet)
+          this.props.onStash(formID, stashDatasheet);
         }
       } else {
         console.log('error', error, values);
@@ -71,10 +71,10 @@ class OriginForm extends React.Component {
   }
 
   handleDelete = (event) => {
-    const formID = this.props.formID ? this.props.formID : null
-    event.preventDefault()
+    event.preventDefault();
+    const formID = this.props.formID ? this.props.formID : null;
     if (this.props.onDelete) {
-      this.props.onDelete(formID)
+      this.props.onDelete(formID);
     }
   }
 

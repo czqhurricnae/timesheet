@@ -15,7 +15,7 @@ class Dashboard extends React.Component {
   }
 
   render () {
-    // fix in codepen
+    // Fix in codepen.
     const sidebar = (<List>
       <List.Item></List.Item>
     </List>)

@@ -145,6 +145,7 @@ class DataEntry extends Component {
                 />)
       return prev
     }, [])
+
     return (
       <Grid centered>
         <Grid.Column>
