@@ -23,7 +23,7 @@ class DataEntry extends Component {
   }
 
   componentDidMount () {
-      const projectApi = 'http://localhost:5000/api/projects';
+      const projectApi = 'http://182.61.145.178/api/projects';
       fetch(projectApi).then((response) => {
           if (response.status !== 200) {
               throw new Error('Fail to get response with status ' + response.status);
@@ -144,7 +144,7 @@ class DataEntry extends Component {
           <Segment.Group >
             <Segment inverted textAlign='center'>
               <Header as='h6' icon>
-                <Icon name='keyboard'>工时管理</Icon>
+                <Icon name='keyboard'>工时录入</Icon>
               </Header>
             </Segment>
             <Segment>

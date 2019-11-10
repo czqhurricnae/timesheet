@@ -1,3 +1,3 @@
-import view from './view/dashboard'
+import view from './views/dashboard'
 
 export { view }

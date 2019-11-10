@@ -1,3 +1,3 @@
-import view from './view/login'
+import view from './views/login'
 
 export { view }

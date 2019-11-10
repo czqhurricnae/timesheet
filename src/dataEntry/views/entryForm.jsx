@@ -47,7 +47,7 @@ class OriginForm extends React.Component {
       })
     }, 300)
 
-   this.setSelected(value)
+    this.setSelected(value)
   }
 
   handleStash = (event) => {
