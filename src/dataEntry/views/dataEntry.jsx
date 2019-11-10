@@ -23,7 +23,7 @@ class DataEntry extends Component {
   }
 
   componentDidMount () {
-      const projectApi = 'http://182.61.145.178/api/projects';
+      const projectApi = 'http://182.61.145.178:3000/stage/api/projects/';
       fetch(projectApi).then((response) => {
           if (response.status !== 200) {
               throw new Error('Fail to get response with status ' + response.status);
