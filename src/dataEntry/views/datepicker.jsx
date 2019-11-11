@@ -22,6 +22,7 @@ class MyDatePicker extends React.Component {
       <SingleDatePicker
         numberOfMonths={1}
         isOutsideRange={() => {}}
+        displayFormat='YYYY-MM-DD'
         date={this.state.date}
         onDateChange={this.handleDateChange}
         focused={this.state.focused}
