@@ -1,5 +1,6 @@
 import React from 'react'
 import { Card, Icon, Header } from 'semantic-ui-react'
+import moment from 'moment'
 
 const Entry = (props) => {
   const formID = props.formID ? props.formID : null
@@ -25,6 +26,9 @@ const Entry = (props) => {
           <Header as='h5' textAlign='left'>
             {formID} #
           </Header>
+          <Card.Header>
+            {moment(new Date(Date.parse(props.datasheet.date))).format('YYYY-MM-DD')}
+          </Card.Header>
           <Card.Header>
             {props.datasheet.selected}
           </Card.Header>

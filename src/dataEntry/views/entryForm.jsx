@@ -26,9 +26,10 @@ class OriginForm extends React.Component {
 
   state = initialState
 
+
   componentDidMount () {
-    const datasheet = this.props.datasheet
-    this.props.form.setFieldsValue(datasheet)
+    const datasheet = this.props.datasheet;
+    this.props.form.setFieldsValue(datasheet);
   }
 
   handleResultSelect = (e, { result }) => {
