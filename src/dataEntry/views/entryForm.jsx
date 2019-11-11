@@ -8,6 +8,8 @@ import _ from 'lodash'
 
 import DatePicker from './datepicker'
 
+import './style.css'
+
 const resultRenderer = ({ title }) => <Label content={title} />
 
 resultRenderer.propTypes = {
