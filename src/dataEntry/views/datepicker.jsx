@@ -14,7 +14,7 @@ class MyDatePicker extends React.Component {
   handleDateChange = date => {
     const handleDateChange = this.props.onChange;
     this.setState({date});
-    handleDateChange(date);
+      handleDateChange(date.format('YYYY-MM-DD'));
   }
 
   render () {
