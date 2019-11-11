@@ -9,7 +9,8 @@ import EntryForm from './entryForm'
 
 const datasheets = {}
 
-const fields ={inputs:
+const fields ={date: {field: 'date', label: '日期', placeholder: 'Date', message: '请选择日期'},
+               inputs:
                 [{field: 'inputs[0].value', label: '机号', placeholder: 'Aircraft', message: '请输入机号'},
                  {field: 'inputs[1].value', label: '工时', placeholder: 'Time', message: '请输入工时'}],
                selected: {field: 'selected', label: '项目', placeholder: 'Task', message: '请选择项目'}

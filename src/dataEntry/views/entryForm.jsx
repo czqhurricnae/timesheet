@@ -95,7 +95,9 @@ class OriginForm extends React.Component {
     const { getFieldDecorator, getFieldError } = this.props.form;
     const { isLoading, results } = this.state;
     const fields = this.props.fields;
-    /* const formID = this.props.formID ? this.props.formID : null; */
+    const datasheet = this.props.datasheet;
+    const value = datasheet && datasheet.date ? datasheet.date : null;
+    const date = value ? new Date(Date.parse(String(value))) : new Date();
 
     return (
       <div className='ui centered cards'>
@@ -110,7 +112,7 @@ class OriginForm extends React.Component {
                 <Grid>
                   <Grid.Column>
                     {getFieldDecorator(fields.date.field, {
-                        initialValue: '',
+                        initialValue: date,
                       rulse: [{
                         required:true,
                         message: fields.date.message,

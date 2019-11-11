@@ -8,13 +8,13 @@ import moment from 'moment'
 class MyDatePicker extends React.Component {
   constructor (props) {
     super(props)
-    this.state = { date: moment(new Date()), focused: false }
+      this.state = { date: moment(this.props.value), focused: false }
   }
 
   handleDateChange = date => {
     const handleDateChange = this.props.onChange;
     this.setState({date});
-      handleDateChange(date.format('YYYY-MM-DD'));
+    handleDateChange(date.toDate());
   }
 
   render () {
