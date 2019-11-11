@@ -6,6 +6,8 @@ import { Form, Search, Label, Grid } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
+import DatePicker from './datepicker'
+
 const resultRenderer = ({ title }) => <Label content={title} />
 
 resultRenderer.propTypes = {
@@ -101,6 +103,24 @@ class OriginForm extends React.Component {
               {formID} #
             </h5>
             <form className='ui form' onSubmit={this.handleStash}>
+              <Form.Field>
+                <label>{fields.date.label}</label>
+                <Grid>
+                  <Grid.Column>
+                    {getFieldDecorator(fields.date.field, {
+                        initialValue: '',
+                      rulse: [{
+                        required:true,
+                        message: fields.date.message,
+                      }],
+                    })(<DatePicker
+                    />)}
+                    <div style={{ color: 'red' }}>
+                      {(getFieldError('date') || []).join(', ')}
+                    </div>
+                  </Grid.Column>
+                </Grid>
+              </Form.Field>
               <Form.Field>
                 <label>{fields.selected.label}</label>
                 <Grid>
