@@ -17,7 +17,7 @@ resultRenderer.propTypes = {
   description: PropTypes.string
 }
 
-const initialState = { isLoading: false, results: [], value: '' }
+const initialState = { isLoading: false, results: [], value: '', open: false }
 
 class OriginForm extends React.Component {
   static propTypes = {
@@ -26,14 +26,13 @@ class OriginForm extends React.Component {
 
   state = initialState
 
-
   componentDidMount () {
     const datasheet = this.props.datasheet;
     this.props.form.setFieldsValue(datasheet);
   }
 
   handleResultSelect = (e, { result }) => {
-    this.setState({ value: result.title })
+    this.setState({ value: result.title, open: false, })
     this.setSelected(result.title)
   }
 
@@ -54,6 +53,18 @@ class OriginForm extends React.Component {
 
     this.setSelected(value)
   }
+
+    handleBlurSearch = (e) => {
+      if (!e.relatedTarget) { var open = false}
+      else if (e.relatedTarget && e.relatedTarget.classList) {
+        open = _.includes(e.relatedTarget.classList, 'result');
+      }
+      this.setState({ open: open, focused: false, });
+    }
+
+    handleFocusSearch = (e) => {
+        this.setState({ open: true, focused: true, });
+    }
 
   handleStash = (event) => {
     event.preventDefault();
@@ -144,8 +155,11 @@ class OriginForm extends React.Component {
                          })}
                          results={results}
                          resultRenderer={resultRenderer}
-                         {...rest}
                          placeholder={fields.selected.placeholder}
+                         open={this.state.open}
+                         onFocus={this.handleFocusSearch}
+                         onBlur={this.handleBlurSearch}
+                         {...rest}
                     />)}
                     <div style={{ color: 'red' }}>
                       {(getFieldError('selected') || []).join(', ')}

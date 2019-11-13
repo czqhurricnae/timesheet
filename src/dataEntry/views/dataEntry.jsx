@@ -30,7 +30,13 @@ class DataEntry extends Component {
               throw new Error('Fail to get response with status ' + response.status);
           }
           response.json().then((responseJson) => {
-              this.setState({source: responseJson});
+              if (responseJson) {
+                  const source = responseJson.map((item, index, array) => {
+                      item.tabIndex = "0";
+                      return item;
+                  })
+                  this.setState({source});
+              }
           }).catch((error) => {
               this.setState({source: null});
           }).catch((error) => {
