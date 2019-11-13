@@ -1,6 +1,8 @@
 import React from 'react'
 import { Card, Icon, Header } from 'semantic-ui-react'
 import moment from 'moment'
+import 'moment/locale/zh-cn'
+moment.locale('zh-cn')
 
 const Entry = (props) => {
   const formID = props.formID ? props.formID : null
