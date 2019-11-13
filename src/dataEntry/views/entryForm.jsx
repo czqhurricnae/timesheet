@@ -17,7 +17,7 @@ resultRenderer.propTypes = {
   description: PropTypes.string
 }
 
-const initialState = { isLoading: false, results: [], value: '', open: false }
+const initialState = { isLoading: false, results: [], value: '', open: false, segmentations: [] }
 
 class OriginForm extends React.Component {
   static propTypes = {
@@ -38,33 +38,55 @@ class OriginForm extends React.Component {
 
   handleSearchChange = (e, { value }) => {
     this.setState({ isLoading: true, value })
+    this.handleSegment(value)
 
     setTimeout(() => {
       if (this.state.value.length < 1) return this.setState(initialState)
 
-      const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-      const isMatch = result => re.test(result.title)
+        this.state.segmentations.map((seg, index, array) => {
+            const re = new RegExp(_.escapeRegExp(seg), 'i')
+            const isMatch = result => re.test(result.title)
+            this.setState({
+                isLoading: false,
+                results: _.filter(this.props.source, isMatch)
+            })
+        })
 
-      this.setState({
-        isLoading: false,
-        results: _.filter(this.props.source, isMatch)
-      })
     }, 300)
 
     this.setSelected(value)
   }
 
-    handleBlurSearch = (e) => {
-      if (!e.relatedTarget) { var open = false}
-      else if (e.relatedTarget && e.relatedTarget.classList) {
-        open = _.includes(e.relatedTarget.classList, 'result');
-      }
-      this.setState({ open: open, focused: false, });
+  handleBlurSearch = (e) => {
+    if (!e.relatedTarget) { var open = false}
+    else if (e.relatedTarget && e.relatedTarget.classList) {
+      open = _.includes(e.relatedTarget.classList, 'result');
     }
+    this.setState({ open: open, focused: false, });
+  }
 
-    handleFocusSearch = (e) => {
-        this.setState({ open: true, focused: true, });
-    }
+  handleFocusSearch = (e) => {
+    this.setState({ open: true, focused: true, });
+  }
+
+  handleSegment = (search) => {
+  const segmentationApi = 'http://182.61.145.178:3000/stage/api/segmentations/';
+  fetch(segmentationApi, {
+    method: 'POST',
+    headers: {
+    'Content-type': 'application/json'
+    },
+    body: JSON.stringify({search})
+  })
+  .then((response) => (response.json())
+    .then((responseJsonData) => {
+        this.setState({segmentations:responseJsonData})
+    })
+    .catch((error) => {
+        console.log(error);
+    })
+   )
+  }
 
   handleStash = (event) => {
     event.preventDefault();
