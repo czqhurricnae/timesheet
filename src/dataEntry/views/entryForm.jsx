@@ -27,8 +27,8 @@ class OriginForm extends React.Component {
   state = initialState
 
   componentDidMount () {
-    const datasheet = this.props.datasheet;
-    this.props.form.setFieldsValue(datasheet);
+    const datasheet = this.props.datasheet
+    this.props.form.setFieldsValue(datasheet)
   }
 
   handleResultSelect = (e, { result }) => {
@@ -43,14 +43,14 @@ class OriginForm extends React.Component {
     setTimeout(() => {
       if (this.state.value.length < 1) return this.setState(initialState)
 
-        this.state.segmentations.map((seg, index, array) => {
-            const re = new RegExp(_.escapeRegExp(seg), 'i')
-            const isMatch = result => re.test(result.title)
-            this.setState({
-                isLoading: false,
-                results: _.filter(this.props.source, isMatch)
-            })
-        })
+      const isMatch = result =>  this.state.segmentations.every((item, index, array) => {
+          return new RegExp(item).test(result.title)
+      })
+
+      this.setState({
+        isLoading: false,
+        results: _.filter(this.props.source, isMatch)
+      })
 
     }, 300)
 
