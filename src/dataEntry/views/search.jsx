@@ -34,7 +34,8 @@ class MySearch extends React.Component {
 
       this.setState({
         isLoading: false,
-        results: _.filter(this.props.source, isMatch)
+        results: _.filter(this.props.source, isMatch),
+        open: Boolean(value.length)
       })
 
     }, 500)
