@@ -80,7 +80,8 @@ class OriginForm extends React.Component {
   })
   .then((response) => (response.json())
     .then((responseJsonData) => {
-        this.setState({segmentations:responseJsonData})
+        console.log(responseJsonData)
+        this.setState({segmentations:responseJsonData.filter((item, index, array) => (item.length > 1))})
     })
     .catch((error) => {
         console.log(error);
