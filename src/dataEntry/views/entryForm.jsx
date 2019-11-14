@@ -38,7 +38,7 @@ class OriginForm extends React.Component {
 
   handleSearchChange = (e, { value }) => {
     this.setState({ isLoading: true, value })
-    this.handleSegment(value)
+    setTimeout(() => this.handleSegment(this.state.value))
 
     setTimeout(() => {
       if (this.state.value.length < 1) return this.setState(initialState)
@@ -52,7 +52,7 @@ class OriginForm extends React.Component {
         results: _.filter(this.props.source, isMatch)
       })
 
-    }, 300)
+    }, 500)
 
     this.setSelected(value)
   }
