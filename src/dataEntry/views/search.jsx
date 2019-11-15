@@ -11,7 +11,8 @@ resultRenderer.propTypes = {
   description: PropTypes.string
 }
 
-const initialState = { isLoading: false, results: [], value: '', open: false, segmentations: [] }
+const initialState = { isLoading: false, results: [], value: '', open: false,
+  segmentations: [] }
 
 class MySearch extends React.Component {
   state = initialState
@@ -26,10 +27,13 @@ class MySearch extends React.Component {
     setTimeout(() => this.handleSegment(this.state.value))
 
     setTimeout(() => {
-      if (this.state.value.length < 1) return this.setState(initialState)
+      if (this.state.value.length < 1) return this.setState(
+        initialState)
 
-      const isMatch = result =>  this.state.segmentations.every((item, index, array) => {
-          return new RegExp(item).test(result.title)
+      const isMatch = result => this.state.segmentations.every((item,
+        index, array) => {
+        return new RegExp(item)
+          .test(result.title)
       })
 
       this.setState({
@@ -44,8 +48,8 @@ class MySearch extends React.Component {
   }
 
   handleBlurSearch = (e) => {
-    if (!e.relatedTarget) { var open = false}
-    else if (e.relatedTarget && e.relatedTarget.classList) {
+    if (!e.relatedTarget) { var open = false } else if (e.relatedTarget && e
+      .relatedTarget.classList) {
       open = _.includes(e.relatedTarget.classList, 'result');
     }
     this.setState({ open: open, focused: false, });
@@ -56,23 +60,26 @@ class MySearch extends React.Component {
   }
 
   handleSegment = (search) => {
-  const segmentationApi = 'http://182.61.145.178:3000/stage/api/segmentations/';
-  fetch(segmentationApi, {
-    method: 'POST',
-    headers: {
-    'Content-type': 'application/json'
-    },
-    body: JSON.stringify({search})
-  })
-  .then((response) => (response.json())
-    .then((responseJsonData) => {
-        console.log(responseJsonData)
-        this.setState({segmentations:responseJsonData.filter((item, index, array) => (item.length > 1))})
-    })
-    .catch((error) => {
-        console.log(error);
-    })
-   )
+    const segmentationApi = 'http://182.61.145.178:3000/stage/api/segmentations/';
+    fetch(segmentationApi, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify({ search })
+      })
+      .then((response) => (response.json())
+        .then((responseJsonData) => {
+          console.log(responseJsonData)
+          this.setState({
+            segmentations: responseJsonData.filter((item,
+              index, array) => (item.length > 1))
+          })
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+      )
   }
 
   setSelected = (value) => {
@@ -82,7 +89,7 @@ class MySearch extends React.Component {
   }
 
   render () {
-    const { placeholder , ...rest } = this.props;
+    const { placeholder, ...rest } = this.props;
     const { isLoading, results } = this.state;
 
     return (

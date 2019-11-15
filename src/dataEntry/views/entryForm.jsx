@@ -50,8 +50,8 @@ class OriginForm extends React.Component {
     this.props.form.resetFields();
   }
 
-  render() {
-    const { onStash, onDelete, formID, isOpen , ...rest } = this.props;
+  render () {
+    const { onStash, onDelete, formID, isOpen, ...rest } = this.props;
     const { getFieldDecorator, getFieldError } = this.props.form;
     const fields = this.props.fields;
     const datasheet = this.props.datasheet;
